@@ -1,5 +1,5 @@
 body {
-    background-color: #293133;
+    background-color: #5b401c;
 }
 .login-box {
     background-color: white;
@@ -8,23 +8,7 @@ body {
     margin-top: 20vh;
     width: 50%;
 }
-.btn {
-    background-color: #ffc800;
-    border-color: #ffc800;
-}
-.btn:link {
-    background-color: #ffc800;
-    border-color: #ffc800;
-}
-.btn:hover {
-    background-color: #ff9e00;
-    border-color: #ff9e00;    
-}
 img {
     max-height: 120px;
     text-align: center;
-}
-.btn:disabled {
-    background-color: #ffc800;
-    border-color: #ffc800;
 }
