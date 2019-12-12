@@ -18,7 +18,7 @@ if (count($_POST) > 0) {
     $result = mysqli_query($conn, "SELECT * FROM users WHERE id='" . $_SESSION["id"] . "'");
     $row = mysqli_fetch_array($result);
     if ($_POST["currentPassword"] == $row["password"]) {
-        mysqli_query($conn, "UPDATE users SET password='" . password_hash($_POST["newPassword"], password) . "' WHERE id='" . $_SESSION["id"] . "'");
+        mysqli_query($conn, "UPDATE users SET password='" . $_POST["newPassword"] . "' WHERE id='" . $_SESSION["id"] . "'");
         $message = "Wachtwoord gewijzigd";
     } else {
         $message = "Huidig wachtwoord is onjuist";
@@ -127,7 +127,7 @@ if (count($_POST) > 0) {
                                     </tr>
 
                                     <tr>
-                                        <td><label>Bevestig wachtwoord</label></td>
+                                        <td><label>Bevestig nieuw wachtwoord</label></td>
                                         <td><input type="password" name="confirmPassword" class="txtField"/><span id="confirmPassword" class="required"></span></td>
                                     </tr>
 
@@ -180,7 +180,7 @@ if (count($_POST) > 0) {
             currentPassword = document.frmChange.currentPassword;
             newPassword = document.frmChange.newPassword;
             confirmPassword = document.frmChange.confirmPassword;
-            if(currentPassword.value != <?php $password ?>) {
+            if( currentPassword.value != "<?=$password?>") {
                 currentPassword.focus();
                 document.getElementById("currentPassword").innerHTML = "<br><p id='warning'>Wachtwoord is onjuist<p>";
                 output = false;
@@ -200,9 +200,10 @@ if (count($_POST) > 0) {
                 document.getElementById("confirmPassword").innerHTML = "<br><p id='warning'>Vul dit veld in<p>";
                 output = false;
             }
-            if(currentPassword.value == newPassword.value) {
+            else if(currentPassword.value == newPassword.value) {
                 currentPassword.value = "";
                 newPassword.value = "";
+                confirmPassword.value = "";
                 document.getElementById("newPassword").innerHTML = "<br><p id='warning'>Wachtwoord kan niet hetzelfde zijn als het oude wachtwoord!<p>";
                 output = false;
             }
