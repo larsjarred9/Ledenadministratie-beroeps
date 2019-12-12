@@ -11,7 +11,7 @@
         $stmt->store_result();
 
         if ($stmt->num_rows > 0) {
-            $stmt-> bind_result($id, $password);
+            $stmt->bind_result($id, $password);
             $stmt->fetch();
 
             if ($_POST["password"] === $password) {
@@ -21,11 +21,14 @@
                 $_SESSION["id"] = $id;
                 header("Location: ../../dashboard/index.php");
             } else {
-                echo "Wachtwoord onjuist.";
+                session_start();
                 session_destroy();
+                header("Location: ../../index.html");
             }
         } else {
-            echo "Gebruikersnaam onjuist.";
+            session_start();
+            session_destroy();
+            header("Location: ../../index.html");
         }
         $stmt->close();
     }

@@ -13,21 +13,17 @@ $result = $conn->query($sql);
 
 $totalcount = 0;
 $contributie_aankomend_jaar = 0;
-
-$leeftijdtotaal = 0;
 foreach ($result as $item) {
     $totalcount++;
-
-    $leeftijdtotaal += $item["leeftijd"];
-
+    $contributie_aankomend_jaar += $item["contributie"];
 };
-$gemiddelde_leeftijd = $leeftijdtotaal/$totalcount;
-
 $sql2 = "SELECT * FROM contributies ORDER BY jaar DESC;";
 
 $results2 = $conn->query($sql2);
+$totaleInkomsten = 0;
 
 foreach ($results2 as $item2) {
+    $totaleInkomsten += $item2["totaalinkomsten"];
     $i = 0;
     if ($i == 0) {
         $contributie_afgelopen_jaar = $item2["totaalinkomsten"];
@@ -38,7 +34,7 @@ foreach ($results2 as $item2) {
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
     <meta charset="UTF-8">
@@ -70,7 +66,7 @@ foreach ($results2 as $item2) {
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="#"><img src="../images/login/logo.png"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -88,8 +84,8 @@ foreach ($results2 as $item2) {
                 <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle">Toggle Menu</a>
 
             </div>
-        </nav>
-        <div id="page-content-wrapper">
+        </div>
+        <main id="page-content-wrapper">
             <div class="container-fluid">
                 <h2>Dashboard - Informatie</h2>
                 <div class="row">
@@ -104,19 +100,19 @@ foreach ($results2 as $item2) {
                     </div>
                     <div class="col-sm-3">
                         <div class="card text-white bg-brown" style="max-width: 18rem;">
-                            <div class="card-header">Gemiddelde leeftijd</div>
+                            <div class="card-header">Totale Inkomsten</div>
                             <div class="card-body">
-                                <h5 class="card-title"><?= round($gemiddelde_leeftijd)?></h5>
-                                <p class="card-text">De gemiddelde leeftijd.</p>
+                                <h5 class="card-title">€ <?= $totaleInkomsten ?></h5>
+                                <p class="card-text">Inkomsten van alle jaren.</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="card text-white bg-brown" style="max-width: 18rem;">
-                            <div class="card-header">Inkomsten</div>
+                            <div class="card-header">Verwachte inkomsten</div>
                             <div class="card-body">
-                                <h5 class="card-title">€ 399,00</h5>
-                                <p class="card-text">Inkomsten van deze maand.</p>
+                                <h5 class="card-title">€ <?= $contributie_aankomend_jaar ?></h5>
+                                <p class="card-text">Inkomsten van aankomend jaar.</p>
                             </div>
                         </div>
                     </div>
@@ -131,7 +127,7 @@ foreach ($results2 as $item2) {
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
         <!-- /#page-content-wrapper -->
 
     </div>

@@ -13,9 +13,20 @@ $stmt->execute();
 $stmt->bind_result($password, $email);
 $stmt->fetch();
 $stmt->close();
+
+if (count($_POST) > 0) {
+    $result = mysqli_query($conn, "SELECT * FROM users WHERE id='" . $_SESSION["id"] . "'");
+    $row = mysqli_fetch_array($result);
+    if ($_POST["currentPassword"] == $row["password"]) {
+        mysqli_query($conn, "UPDATE users SET password='" . password_hash($_POST["newPassword"], password) . "' WHERE id='" . $_SESSION["id"] . "'");
+        $message = "Wachtwoord gewijzigd";
+    } else {
+        $message = "Huidig wachtwoord is onjuist";
+    }
+}
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
     <meta charset="UTF-8">
@@ -28,7 +39,7 @@ $stmt->close();
 </head>
 
 <body>
-    <div id="wrapper" class="toggled">
+    <main id="wrapper" class="toggled">
 
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
@@ -47,7 +58,7 @@ $stmt->close();
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="#"><img src="../images/login/logo.png"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -65,7 +76,7 @@ $stmt->close();
                 <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle">Toggle Menu</a>
 
             </div>
-        </nav>
+        </div>
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <h2>Dashboard - Mijn Account</h2>
@@ -76,40 +87,75 @@ $stmt->close();
                             <tr>
                                 <td>Naam:</td>
                                 <td><?= $_SESSION["name"] ?></td>
-                                <td><a href="" class="btn btn-warning ml-3"><i class='fas fa-user-edit'></i></a></td>
                             </tr>
                             <tr>
                                 <td>Email:</td>
                                 <td><?= $email ?></td>
-                                <td><a href="" class="btn btn-warning ml-3"><i class='fas fa-user-edit'></i></a></td>
                             </tr>
 
                         </table>
-                        <input class="btn btn-primary" type="submit" value="Wachtwoord veranderen" placeholder="Wachtwoord veranderen" id="submit">
+                        <br>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#PassForm">Wijzig wachtwoord</button>
+
                     </div>
                 </div>
-                <div id="boxed" class="shadow p-3 col-sm-3 bg-white rounded">
-                    <div>
-                        <p>Betaalmethode</p>
-                        <table>
-                            <tr>
-                                <td>:</td>
-                                <td><?= $_SESSION["name"] ?></td>
-                                <td><a href="" class="btn btn-warning ml-3"><i class='fas fa-user-edit'></i></a></td>
-                            </tr>
-                            <tr>
-                                <td>Email:</td>
-                                <td><?= $email ?></td>
-                                <td><a href="" class="btn btn-warning ml-3"><i class='fas fa-user-edit'></i></a></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
+               
             </div>
         </div>
+        <div class="modal fade" id="PassForm" tabindex="-1" role="dialog" aria-labelledby="PassFormTitle" aria-hidden="true"> <!-- shadow p-3 col-sm-3 bg-white rounded -->
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="PassFormTitle">Wachtwoord wijzigen</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form name="frmChange" method="POST" action="profile.php" onsubmit="return validatePassword()">
+                            <div>
+                                <div class="message"><?php if(isset($message)) { echo $message; } ?></div>
+                                <table border="0" cellpadding="10" cellspacing="0" align="center" class="tblSaveForm">
+                                    <tr>
+                                        <td width="40%"><label>Oud wachtwoord</label></td>
+                                        <td width="60%"><input type="password" name="currentPassword" class="txtField"/><span id="currentPassword"  class="required"></span></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><label>Nieuw wachtwoord</label></td>
+                                        <td><input type="password" name="newPassword" class="txtField"/><span id="newPassword" class="required"></span></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><label>Bevestig wachtwoord</label></td>
+                                        <td><input type="password" name="confirmPassword" class="txtField"/><span id="confirmPassword" class="required"></span></td>
+                                    </tr>
+
+                                    <!--
+                                    <label>Oud wachtwoord</label><br>
+                                    <input type="text" name="oldPass" id="oldPass"><br><br>
+
+                                    <label>Nieuw wachtwoord</label><br>
+                                    <input type="text" name="newPass" id="newPass"><br><br>
+
+                                    <label>Bevestig nieuw wachtwoord</label><br>
+                                    <input type="text" name="confirmPass" id="confirmPass">
+                                    -->
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>  
+                                <button type="submit" name="submit" value="Submit" class="btn btn-primary btnSubmit">Wachtwoord opslaan</button> 
+                            </div>                              
+                        </form>
+                    </div>               
+                </div>
+            </div>
+
+        </div>           
         <!-- /#page-content-wrapper -->
 
-    </div>
+    </main>
     <!-- /#wrapper -->
 
     <!-- Menu Toggle Script -->
@@ -123,6 +169,53 @@ $stmt->close();
             e.preventDefault();
             $("#wrapper").toggleClass("toggled");
         });
+
+        $('#PassForm').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+        });
+
+        function validatePassword() {
+            var currentPassword,newPassword,confirmPassword,output = true;
+
+            currentPassword = document.frmChange.currentPassword;
+            newPassword = document.frmChange.newPassword;
+            confirmPassword = document.frmChange.confirmPassword;
+            if(currentPassword.value != <?php $password ?>) {
+                currentPassword.focus();
+                document.getElementById("currentPassword").innerHTML = "<br><p id='warning'>Wachtwoord is onjuist<p>";
+                output = false;
+            }            
+            else if(!currentPassword.value) {
+                currentPassword.focus();
+                document.getElementById("currentPassword").innerHTML = "<br><p id='warning'>Vul dit veld in<p>";
+                output = false;
+            }
+            if(!newPassword.value) {
+                currentPassword.focus();
+                document.getElementById("newPassword").innerHTML = "<br><p id='warning'>Vul dit veld in<p>";
+                output = false;
+            }
+            if(!confirmPassword.value) {
+                currentPassword.focus();
+                document.getElementById("confirmPassword").innerHTML = "<br><p id='warning'>Vul dit veld in<p>";
+                output = false;
+            }
+            if(currentPassword.value == newPassword.value) {
+                currentPassword.value = "";
+                newPassword.value = "";
+                document.getElementById("newPassword").innerHTML = "<br><p id='warning'>Wachtwoord kan niet hetzelfde zijn als het oude wachtwoord!<p>";
+                output = false;
+            }
+            else if(newPassword.value != confirmPassword.value) {
+                newPassword.value = "";
+                confirmPassword.value = "";
+                newPassword.focus();
+                document.getElementById("confirmPassword").innerHTML = "<br><p id='warning'>De wachtwoorden komen niet overeen<p>";
+                output = false
+            }
+            return output;
+        }
+
     </script>
 </body>
 

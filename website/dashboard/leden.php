@@ -1,19 +1,23 @@
 <?php
+include('../php/database.php');
+
 session_start();
 if (!isset($_SESSION["loggedin"])) {
     header("Location: ../index.html");
     exit();
 }
-?>
-<?php
-include('../php/database.php');
 
-$sql = "SELECT * FROM leden ORDER BY achternaam;";
-
-$result = $conn->query($sql);
+if (isset($_GET["search"])) {
+    $search = $_GET["search"];
+    $sql = "SELECT * FROM leden WHERE achternaam LIKE '%" . $search . "%' ORDER BY achternaam;";
+    $result = $conn->query($sql);
+} else {
+    $sql = "SELECT * FROM leden ORDER BY achternaam;";
+    $result = $conn->query($sql);
+}
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
     <meta charset="UTF-8">
@@ -21,7 +25,7 @@ $result = $conn->query($sql);
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Administratie - Leden</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="../css/custom.css">
+    <link rel="stylesheet" href="../css/custom.css">
     <script src="https://kit.fontawesome.com/24c24daece.js" crossorigin="anonymous"></script>
 </head>
 
@@ -35,7 +39,7 @@ $result = $conn->query($sql);
                     <a href="index.php">Dashboard</a>
                 </li>
                 <li>
-                    <b><a href="leden.php">Leden</a></b>
+                    <a class="active" href="leden.php">Leden</a>
                 </li>
                 <li>
                     <a href="profile.php">Mijn Account</a>
@@ -45,7 +49,7 @@ $result = $conn->query($sql);
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="#"><img src="../images/login/logo.png"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -63,20 +67,20 @@ $result = $conn->query($sql);
                 <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle">Toggle Menu</a>
 
             </div>
-        </nav>
-        <div id="page-content-wrapper">
+        </div>
+        <main id="page-content-wrapper">
             <div class="container-fluid">
                 <h2>Dashboard - Leden</h2>
                 <form method="POST" action="../php/search.php">
                     <div class="form-row">
                         <div class="form-group col-md-3">
-                            <input required type="text" placeholder="Zoek een lid op Achternaam" class="form-control" id="zoeken">
+                            <input required type="text" name="search" placeholder="Zoek een lid op Achternaam" class="form-control" id="zoeken">
                         </div>
                         <div class="form-group col-md-1">
                             <input class="btn btn-primary form-control" type="submit" value="Zoeken" placeholder="Zoeken" id="submit">
                         </div>
                         <div class="form-group col-md-8">
-                            <a style="float: right;" href="" class="btn btn-success"><i class="fas fa-user-plus"></i> Lid Toevoeen</a>
+                            <a style="float: right;" href="views/adduser.php" class="btn btn-success"><i class="fas fa-user-plus"></i> Lid Toevoeen</a>
                         </div>
                     </div>
                 </form>
@@ -88,8 +92,9 @@ $result = $conn->query($sql);
                                 <th scope="col">Voornaam</th>
                                 <th scope="col">Achternaam</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Leeftijd</th>
+                                <th scope="col">Geboortejaar</th>
                                 <th scope="col">Woonplaats</th>
+                                <th scope="col"></th>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
                             </tr>
@@ -98,7 +103,7 @@ $result = $conn->query($sql);
 
                             <?php
                             foreach ($result as $item) {
-                                echo "<td>" . $item["ledennummer"] . "</td>" . "<td>" . $item["voornaam"] . "</td><td>" . $item["achternaam"] . "</td><td>" . $item["email"] . "</td><td>" . $item["leeftijd"] . "</td><td>" . $item["woonplaats"] . "</td><td><a href='' class='btn btn-warning'><i class='fas fa-user-edit'></i></a></td><td><a href='' class='btn btn-danger'><i class='fas fa-user-minus'></i></a></td></tr>";
+                                echo "<td>" . $item["ledennummer"] . "</td>" . "<td>" . $item["voornaam"] . "</td><td>" . $item["achternaam"] . "</td><td>" . $item["email"] . "</td><td>" . $item["geboortejaar"] . "</td><td>" . $item["woonplaats"] . "</td><td><a href='views/viewuser.php?id=" . $item['ledennummer'] . "' class='btn btn-info'><i class='fas fa-user'></i></a></td><td><a href='views/edituser.php?id=" . $item['ledennummer'] . "' class='btn btn-warning'><i class='fas fa-user-edit'></i></a></td><td><a href='views/removeuser.php?id=" . $item["ledennummer"] . "' class='btn btn-danger'><i class='fas fa-user-minus'></i></a></td></tr>";
                             }
                             ?>
                         </tbody>
@@ -106,9 +111,7 @@ $result = $conn->query($sql);
 
                 </div>
             </div>
-
-
-        </div>
+        </main>
         <!-- /#page-content-wrapper -->
 
     </div>

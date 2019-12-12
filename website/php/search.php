@@ -1,6 +1,5 @@
 <?php 
 require ('database.php');
-
-$sql = "SELECT * FROM leden ORDER BY achternaam WHERE achternaam = ?;";
-header("Location: ../dashboard/leden.php");
+$search = $_POST["search"];
+header("Location: ../dashboard/leden.php?search=".$search);
 ?>

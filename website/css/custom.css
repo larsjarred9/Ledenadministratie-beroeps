@@ -14,6 +14,9 @@ body {
     padding-left: 250px;
   }
   
+  .active {
+    font-weight: bold;
+  }
   #sidebar-wrapper {
     z-index: 1000;
     position: fixed;
@@ -173,4 +176,11 @@ table {
 #boxed {
   background-color: white;
   margin-left: 5px;
+}
+nav {
+  position: static !important;
+}
+
+#warning {
+  color: red;
 }
