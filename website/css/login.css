@@ -8,6 +8,13 @@ body {
     margin-top: 20vh;
     width: 50%;
 }
+.register-box {
+    background-color: white;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-top: 10vh;
+    width: 50%;
+}
 img {
     max-height: 120px;
     text-align: center;

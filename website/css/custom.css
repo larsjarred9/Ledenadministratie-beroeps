@@ -143,7 +143,7 @@ body {
   background-color: #5b401c ;
 }
 .btn-danger {
-  color: #fff;
+  color: #fff !important;
   background-color: #dc3545;
   border-color: #dc3545;
 }
@@ -183,4 +183,16 @@ nav {
 
 #warning {
   color: red;
+}
+.white-background {
+  margin-top: 25px;
+  margin-left: 15px;
+  padding: 5px;
+  background-color: white;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+}
+.no-padding {
+  padding: 0;
 }

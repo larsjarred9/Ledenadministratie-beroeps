@@ -13,7 +13,7 @@ if ($stmt = $conn->prepare("SELECT * FROM leden WHERE ledennummer = ? ORDER BY a
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($ledennummer, $voornaam, $achternaam, $geboortejaar, $adress, $huisnummer, $postcode, $woonplaats, $wapenstoegestaan, $betalingstermijn, $contributie, $geslacht, $email);
+        $stmt->bind_result($ledennummer, $voornaam, $achternaam, $geboortejaar, $adress, $huisnummer, $postcode, $woonplaats, $wapenstoegestaan, $betalingstermijn, $contributie, $geslacht, $email, $disabled);
         $stmt->fetch();
     } else {
         echo "Er ging iets fout tijdens het vinden van het lid. Probeer het later opnieuw.";
@@ -83,11 +83,11 @@ if ($stmt = $conn->prepare("SELECT * FROM leden WHERE ledennummer = ? ORDER BY a
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="Voornaam">Voornaam</label>
-                                        <?php echo "<input type='text' require class='form-control' name='voornaam' id='Voornaam' placeholder='Voornaam' value='" . $voornaam . "'>" ?> 
+                                        <?php echo "<input type='text' require class='form-control' name='voornaam' id='Voornaam' placeholder='Voornaam' value='" . $voornaam . "'>" ?>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="Achternaam">Achternaam</label>
-                                    <?php echo "<input type='text' require class='form-control' name='achternaam' id='Achternaam' placeholder='Achternaam' value='" . $achternaam . "'>" ?> 
+                                        <?php echo "<input type='text' require class='form-control' name='achternaam' id='Achternaam' placeholder='Achternaam' value='" . $achternaam . "'>" ?>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -96,8 +96,8 @@ if ($stmt = $conn->prepare("SELECT * FROM leden WHERE ledennummer = ? ORDER BY a
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="Address">Address</label>
-                                        <?php echo "<input type='text' class='form-control' require name='adress' id='Address' placeholder='Address' value='" . $adress . "'>" ?> 
+                                        <label for="Address">Adres</label>
+                                        <?php echo "<input type='text' class='form-control' require name='adress' id='Address' placeholder='Adres' value='" . $adress . "'>" ?>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="Huisnummer">Huisnummer</label>
@@ -107,7 +107,7 @@ if ($stmt = $conn->prepare("SELECT * FROM leden WHERE ledennummer = ? ORDER BY a
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="woonplaats">Woonplaats</label>
-                                        <?php echo "<input type='text' require class='form-control' name='woonplaats' id='woonplaats' placeholder='woonplaats' value='" . $woonplaats . "'>" ?> 
+                                        <?php echo "<input type='text' require class='form-control' name='woonplaats' id='woonplaats' placeholder='woonplaats' value='" . $woonplaats . "'>" ?>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="geboortejaar">Geboortejaar</label>
@@ -117,27 +117,31 @@ if ($stmt = $conn->prepare("SELECT * FROM leden WHERE ledennummer = ? ORDER BY a
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="Geslacht">Geslacht<br></label>
-                                        <input type="text" class="form-control" require name="geslacht" id="geslacht" placeholder="geslacht" value=<?= $geslacht ?>>
+                                        <select class="form-control" name="geslacht" id="geslacht">
+                                            <option value="Man">Man</option>
+                                            <option value="Vrouw">Vrouw</option>
+                                            <option value="Ongeidentificeerd">Ongeidentificeerd</option>
+                                        </select>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="Contributie">Contributie</label>
-                                        <input type="text" class="form-control" require name="contributie" id="Contributie" placeholder="Contributie" value=<?=$contributie?>>
+                                        <input type="text" class="form-control" require name="contributie" id="Contributie" placeholder="Contributie" value=<?= $contributie ?>>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="Geslacht">Betalingstermijn<br></label>
-                                        <input type="text" class="form-control" require name="betalingstermijn" id="Betalingstermijn" placeholder="Betalingstermijn" value=<?= $betalingstermijn ?>>
+                                        <input type="date" class="form-control" require name="betalingstermijn" id="Betalingstermijn" placeholder="Betalingstermijn" value=<?= $betalingstermijn ?>>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="Contributie">Wapenstoegestaan</label>
-                                        <input type="text" name="wapenstoegestaan" require class="form-control" id="Wapenstoegestaan" placeholder="Wapenstoegestaan" value=<?=$wapenstoegestaan?>>
+                                        <input type="text" name="wapenstoegestaan" require class="form-control" id="Wapenstoegestaan" placeholder="Wapenstoegestaan" value=<?= $wapenstoegestaan ?>>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="Geslacht">Postcode<br></label>
-                                        <?php echo "<input type='text' class='form-control' require name='postcode' id='Postcode' placeholder='Postcode' value='" . $postcode . "'>" ?> 
+                                        <?php echo "<input type='text' class='form-control' require name='postcode' id='Postcode' placeholder='Postcode' value='" . $postcode . "'>" ?>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-warning"><i class='fas fa-user-edit'></i> Wijzig Gegevens</button>

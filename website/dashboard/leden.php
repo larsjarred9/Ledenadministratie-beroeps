@@ -12,7 +12,7 @@ if (isset($_GET["search"])) {
     $sql = "SELECT * FROM leden WHERE achternaam LIKE '%" . $search . "%' ORDER BY achternaam;";
     $result = $conn->query($sql);
 } else {
-    $sql = "SELECT * FROM leden ORDER BY achternaam;";
+    $sql = "SELECT * FROM leden WHERE disable='N' ORDER BY achternaam;";
     $result = $conn->query($sql);
 }
 ?>
@@ -64,7 +64,7 @@ if (isset($_GET["search"])) {
                         <a class="nav-link" href="../php/login/logout.php"><i class="fas fa-sign-out-alt"></i> Sign Out</span></a>
                     </li>
                 </ul>
-                <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle">Toggle Menu</a>
+                <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle"><i class="fas fa-sliders-h"></i> Toggle Menu</a>
 
             </div>
         </div>
@@ -77,10 +77,10 @@ if (isset($_GET["search"])) {
                             <input required type="text" name="search" placeholder="Zoek een lid op Achternaam" class="form-control" id="zoeken">
                         </div>
                         <div class="form-group col-md-1">
-                            <input class="btn btn-primary form-control" type="submit" value="Zoeken" placeholder="Zoeken" id="submit">
+                            <button class="btn btn-primary form-control" type="submit" id="submit"><i class="fas fa-search"></i> Zoeken</button>
                         </div>
                         <div class="form-group col-md-8">
-                            <a style="float: right;" href="views/adduser.php" class="btn btn-success"><i class="fas fa-user-plus"></i> Lid Toevoeen</a>
+                            <a style="float: right;" href="views/adduser.php" class="btn btn-success"><i class="fas fa-user-plus"></i> Lid Toevoegen</a>
                         </div>
                     </div>
                 </form>

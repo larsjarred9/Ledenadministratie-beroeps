@@ -101,7 +101,11 @@ if (!isset($_SESSION["loggedin"])) {
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="Geslacht">Geslacht<br></label>
-                                        <input type="text" class="form-control" name="geslacht" id="geslacht" placeholder="geslacht" require>
+                                        <select class="form-control" name="geslacht" id="geslacht">
+                                            <option value="Man">Man</option>
+                                            <option value="Vrouw">Vrouw</option>
+                                            <option value="Ongeidentificeerd">Ongeidentificeerd</option>
+                                        </select>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="Contributie">Contributie</label>
@@ -111,7 +115,7 @@ if (!isset($_SESSION["loggedin"])) {
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="Geslacht">Betalingstermijn<br></label>
-                                        <input type="text" class="form-control" name="betalingtermijn" id="Betalingstermijn" placeholder="Betalingstermijn (YYYY-MM-DD)" require>
+                                        <input type="date" class="form-control" name="betalingtermijn" id="Betalingstermijn" placeholder="Betalingstermijn (YYYY-MM-DD)" require>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="Contributie">Wapenstoegestaan</label>
@@ -128,7 +132,7 @@ if (!isset($_SESSION["loggedin"])) {
                                          <input type='text' class='form-control' name='ledennummer' id='Ledennummer' placeholder='Ledennummer' require>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-success"><i class="fas fa-user-plus"></i> Lid Toevoeen</button>
+                                <button type="submit" class="btn btn-success"><i class="fas fa-user-plus"></i> Lid Toevoegen</button>
                             </form>
                         </div>
                     </div>

@@ -20,6 +20,7 @@ if (count($_POST) > 0) {
     if ($_POST["currentPassword"] == $row["password"]) {
         mysqli_query($conn, "UPDATE users SET password='" . $_POST["newPassword"] . "' WHERE id='" . $_SESSION["id"] . "'");
         $message = "Wachtwoord gewijzigd";
+        header("Location: profile.php");
     } else {
         $message = "Huidig wachtwoord is onjuist";
     }
@@ -73,7 +74,7 @@ if (count($_POST) > 0) {
                         <a class="nav-link" href="../php/login/logout.php"><i class="fas fa-sign-out-alt"></i> Sign Out</span></a>
                     </li>
                 </ul>
-                <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle">Toggle Menu</a>
+                <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle"><i class="fas fa-sliders-h"></i> Toggle Menu</a>
 
             </div>
         </div>
@@ -95,14 +96,15 @@ if (count($_POST) > 0) {
 
                         </table>
                         <br>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#PassForm">Wijzig wachtwoord</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#PassForm"><i class="fas fa-key"></i> Wijzig wachtwoord</button>
 
                     </div>
                 </div>
-               
+
             </div>
         </div>
-        <div class="modal fade" id="PassForm" tabindex="-1" role="dialog" aria-labelledby="PassFormTitle" aria-hidden="true"> <!-- shadow p-3 col-sm-3 bg-white rounded -->
+        <div class="modal fade" id="PassForm" tabindex="-1" role="dialog" aria-labelledby="PassFormTitle" aria-hidden="true">
+            <!-- shadow p-3 col-sm-3 bg-white rounded -->
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -114,45 +116,34 @@ if (count($_POST) > 0) {
                     <div class="modal-body">
                         <form name="frmChange" method="POST" action="profile.php" onsubmit="return validatePassword()">
                             <div>
-                                <div class="message"><?php if(isset($message)) { echo $message; } ?></div>
+                                <div class="message"><?php if (isset($message)) { echo $message; } ?></div>
                                 <table border="0" cellpadding="10" cellspacing="0" align="center" class="tblSaveForm">
                                     <tr>
                                         <td width="40%"><label>Oud wachtwoord</label></td>
-                                        <td width="60%"><input type="password" name="currentPassword" class="txtField"/><span id="currentPassword"  class="required"></span></td>
+                                        <td width="60%"><input type="password" name="currentPassword" class="txtField" /><span id="currentPassword" class="required"></span></td>
                                     </tr>
 
                                     <tr>
                                         <td><label>Nieuw wachtwoord</label></td>
-                                        <td><input type="password" name="newPassword" class="txtField"/><span id="newPassword" class="required"></span></td>
+                                        <td><input type="password" name="newPassword" class="txtField" /><span id="newPassword" class="required"></span></td>
                                     </tr>
 
                                     <tr>
                                         <td><label>Bevestig nieuw wachtwoord</label></td>
-                                        <td><input type="password" name="confirmPassword" class="txtField"/><span id="confirmPassword" class="required"></span></td>
+                                        <td><input type="password" name="confirmPassword" class="txtField" /><span id="confirmPassword" class="required"></span></td>
                                     </tr>
-
-                                    <!--
-                                    <label>Oud wachtwoord</label><br>
-                                    <input type="text" name="oldPass" id="oldPass"><br><br>
-
-                                    <label>Nieuw wachtwoord</label><br>
-                                    <input type="text" name="newPass" id="newPass"><br><br>
-
-                                    <label>Bevestig nieuw wachtwoord</label><br>
-                                    <input type="text" name="confirmPass" id="confirmPass">
-                                    -->
                                 </table>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>  
-                                <button type="submit" name="submit" value="Submit" class="btn btn-primary btnSubmit">Wachtwoord opslaan</button> 
-                            </div>                              
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times-circle"></i> Close</button>
+                                <button type="submit" name="submit" value="Submit" class="btn btn-primary btnSubmit"><i class="fas fa-key"></i> Wachtwoord opslaan</button>
+                            </div>
                         </form>
-                    </div>               
+                    </div>
                 </div>
             </div>
 
-        </div>           
+        </div>
         <!-- /#page-content-wrapper -->
 
     </main>
@@ -170,44 +161,42 @@ if (count($_POST) > 0) {
             $("#wrapper").toggleClass("toggled");
         });
 
-        $('#PassForm').on('shown.bs.modal', function () {
-        $('#myInput').trigger('focus')
+        $("#PassForm").on("shown.bs.modal", function() {
+            $("#myInput").trigger("focus");
         });
 
         function validatePassword() {
-            var currentPassword,newPassword,confirmPassword,output = true;
+            var currentPassword, newPassword, confirmPassword, output = true;
 
             currentPassword = document.frmChange.currentPassword;
             newPassword = document.frmChange.newPassword;
             confirmPassword = document.frmChange.confirmPassword;
-            if( currentPassword.value != "<?=$password?>") {
-                currentPassword.focus();
-                document.getElementById("currentPassword").innerHTML = "<br><p id='warning'>Wachtwoord is onjuist<p>";
-                output = false;
-            }            
-            else if(!currentPassword.value) {
+
+            if (!currentPassword.value) {
                 currentPassword.focus();
                 document.getElementById("currentPassword").innerHTML = "<br><p id='warning'>Vul dit veld in<p>";
                 output = false;
-            }
-            if(!newPassword.value) {
+            } else if (!newPassword.value) {
                 currentPassword.focus();
                 document.getElementById("newPassword").innerHTML = "<br><p id='warning'>Vul dit veld in<p>";
                 output = false;
-            }
-            if(!confirmPassword.value) {
+            } else if (!confirmPassword.value) {
                 currentPassword.focus();
                 document.getElementById("confirmPassword").innerHTML = "<br><p id='warning'>Vul dit veld in<p>";
                 output = false;
-            }
-            else if(currentPassword.value == newPassword.value) {
-                currentPassword.value = "";
-                newPassword.value = "";
-                confirmPassword.value = "";
-                document.getElementById("newPassword").innerHTML = "<br><p id='warning'>Wachtwoord kan niet hetzelfde zijn als het oude wachtwoord!<p>";
-                output = false;
-            }
-            else if(newPassword.value != confirmPassword.value) {
+            } else if (currentPassword.value != "<?= $password ?>") {
+                if ( <?= "'" . $password . "'" ?> == newPassword.value) {
+                    currentPassword.value = "";
+                    newPassword.value = "";
+                    confirmPassword.value = "";
+                    document.getElementById("newPassword").innerHTML = "<br><p id='warning'>Wachtwoord kan niet hetzelfde zijn als het oude wachtwoord!<p>";
+                    output = false;
+                } else {
+                    currentPassword.focus();
+                    document.getElementById("currentPassword").innerHTML = "<br><p id='warning'>Wachtwoord is onjuist<p>";
+                    output = false;
+                }
+            } else if (newPassword.value != confirmPassword.value) {
                 newPassword.value = "";
                 confirmPassword.value = "";
                 newPassword.focus();
@@ -216,7 +205,6 @@ if (count($_POST) > 0) {
             }
             return output;
         }
-
     </script>
 </body>
 

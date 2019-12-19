@@ -81,7 +81,7 @@ foreach ($results2 as $item2) {
                         <a class="nav-link" href="../php/login/logout.php"><i class="fas fa-sign-out-alt"></i> Sign Out</span></a>
                     </li>
                 </ul>
-                <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle">Toggle Menu</a>
+                <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle"><i class="fas fa-sliders-h"></i> Toggle Menu</a>
 
             </div>
         </div>
@@ -118,11 +118,55 @@ foreach ($results2 as $item2) {
                     </div>
                     <div class="col-sm-3">
                         <div class="card text-white bg-brown" style="max-width: 18rem;">
-                            <div class="card-header">Voige Inkomsten</div>
+                            <div class="card-header">Vorige Inkomsten</div>
                             <div class="card-body">
                                 <h5 class="card-title">€ <?= $contributie_afgelopen_jaar ?></h5>
                                 <p class="card-text">Inkomsten van vorig jaar.</p>
                             </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="container-fluid">
+                        <br>
+                        <h2>Leden - Nog niet betaald</h2>
+                        <div class="col-sm-12 no-padding">
+                        <form method="POST" action="../php/search.php">
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <input required type="text" name="search" placeholder="Zoek een lid op Achternaam" class="form-control" id="zoeken">
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <button class="btn btn-primary form-control" type="submit" id="submit"><i class="fas fa-search"></i> Zoeken</button>
+                                </div>
+                            </div>
+                        </form>
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Nummer</th>
+                                        <th scope="col">Voornaam</th>
+                                        <th scope="col">Achternaam</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Betalingstermijn</th>
+                                        <th scope="col">Te betalen</th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <?php
+                                    foreach ($result as $item) {
+                                        if($item["betalingtermijn"] < date("Y-m-d") && $item['disable'] == 'N') {
+                                            echo "<td>" . $item["ledennummer"] . "</td>" . "<td>" . $item["voornaam"] . "</td><td>" . $item["achternaam"] . "</td><td>" . $item["email"] . "</td><td>" . $item["betalingtermijn"] . "</td><td>" . $item["contributie"] . "</td><td><a href='views/viewuser.php?id=" . $item['ledennummer'] . "' class='btn btn-info'><i class='fas fa-user'></i></a></td><td><a href='views/edituser.php?id=" . $item['ledennummer'] . "' class='btn btn-warning'><i class='fas fa-user-edit'></i></a></td><td><a href='views/removeuser.php?id=" . $item["ledennummer"] . "' class='btn btn-danger'><i class='fas fa-user-minus'></i></a></td></tr>";
+                                        }
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

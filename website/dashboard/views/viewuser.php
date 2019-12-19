@@ -12,11 +12,13 @@ if ($stmt = $conn->prepare("SELECT * FROM leden WHERE ledennummer = ? ORDER BY a
     $stmt->execute();
     $stmt->store_result();
 
+    $message = "";
+
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($ledennummer, $voornaam, $achternaam, $geboortejaar, $adress, $huisnummer, $postcode, $woonplaats, $wapenstoegestaan, $betalingstermijn, $contributie, $geslacht, $email);
+        $stmt->bind_result($ledennummer, $voornaam, $achternaam, $geboortejaar, $adress, $huisnummer, $postcode, $woonplaats, $wapenstoegestaan, $betalingstermijn, $contributie, $geslacht, $email, $disabled);
         $stmt->fetch();
     } else {
-        echo "Er ging iets fout tijdens het vinden van het lid. Probeer het later opnieuw.";
+        $message = "Er is iets mis gegaan tijdens het lid. Probeer het later opnieuw.";
     }
 }
 
@@ -76,6 +78,7 @@ if ($stmt = $conn->prepare("SELECT * FROM leden WHERE ledennummer = ? ORDER BY a
         <main id="page-content-wrapper">
             <div class="container-fluid">
                 <h2>Dashboard - Gegevens Inzien</h2>
+                <h5><?= $message ?></h5>
                 <div class="col-sm-4">
                     <div class="card">
                         <div class="card-body">
