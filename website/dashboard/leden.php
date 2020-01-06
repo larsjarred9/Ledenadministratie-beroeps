@@ -7,6 +7,8 @@ if (!isset($_SESSION["loggedin"])) {
     exit();
 }
 
+$level = $_SESSION["level"];
+
 if (isset($_GET["search"])) {
     $search = $_GET["search"];
     $sql = "SELECT * FROM leden  WHERE disable='N' AND achternaam LIKE '%" . $search . "%' ORDER BY achternaam;";
@@ -83,7 +85,7 @@ if (isset($_GET["search"])) {
                             <button class="btn btn-primary form-control" type="submit" id="submit"><i class="fas fa-search"></i> Zoeken</button>
                         </div>
                         <div class="form-group col-md-8">
-                            <a style="float: right;" href="views/adduser.php" class="btn btn-success"><i class="fas fa-user-plus"></i> Lid Toevoegen</a>
+                            <?php if($level == 2 || $level == 1) echo '<a style="float: right;" href="views/adduser.php" class="btn btn-success"><i class="fas fa-user-plus"></i> Lid Toevoegen</a>' ?>
                         </div>
                     </div>
                 </form>
@@ -104,11 +106,27 @@ if (isset($_GET["search"])) {
                         </thead>
                         <tbody>
 
-                            <?php
-                            foreach ($result as $item) {
-                                echo "<td>" . $item["ledennummer"] . "</td>" . "<td>" . $item["voornaam"] . "</td><td>" . $item["achternaam"] . "</td><td>" . $item["email"] . "</td><td>" . $item["geboortejaar"] . "</td><td>" . $item["woonplaats"] . "</td><td><a href='views/viewuser.php?id=" . $item['ledennummer'] . "' class='btn btn-info'><i class='fas fa-user'></i></a></td><td><a href='views/edituser.php?id=" . $item['ledennummer'] . "' class='btn btn-warning'><i class='fas fa-user-edit'></i></a></td><td><a href='views/removeuser.php?id=" . $item["ledennummer"] . "' class='btn btn-danger'><i class='fas fa-user-minus'></i></a></td></tr>";
-                            }
-                            ?>
+                        <?php
+                                    if($level == 1) {
+                                    foreach ($result as $item) {
+                                        if($item["betalingtermijn"] < date("Y-m-d") && $item['disable'] == 'N') {
+                                            echo "<td>" . $item["ledennummer"] . "</td>" . "<td>" . $item["voornaam"] . "</td><td>" . $item["achternaam"] . "</td><td>" . $item["email"] . "</td><td>" . $item["betalingtermijn"] . "</td><td>" . $item["contributie"] . "</td><td><a href='views/viewuser.php?id=" . $item['ledennummer'] . "' class='btn btn-info'><i class='fas fa-user'></i></a></td><td><a href='views/edituser.php?id=" . $item['ledennummer'] . "' class='btn btn-warning'><i class='fas fa-user-edit'></i></a></td><td><a href='views/removeuser.php?id=" . $item["ledennummer"] . "' class='btn btn-danger'><i class='fas fa-user-minus'></i></a></td></tr>";
+                                        }
+                                    }
+                                    }else if ($level == 2) {
+                                        foreach ($result as $item) {
+                                            if($item["betalingtermijn"] < date("Y-m-d") && $item['disable'] == 'N') {
+                                                echo "<td>" . $item["ledennummer"] . "</td>" . "<td>" . $item["voornaam"] . "</td><td>" . $item["achternaam"] . "</td><td>" . $item["email"] . "</td><td>" . $item["betalingtermijn"] . "</td><td>" . $item["contributie"] . "</td><td><a href='views/viewuser.php?id=" . $item['ledennummer'] . "' class='btn btn-info'><i class='fas fa-user'></i></a></td><td><a href='views/edituser.php?id=" . $item['ledennummer'] . "' class='btn btn-warning'><i class='fas fa-user-edit'></i></a></tr>";
+                                            }
+                                        } 
+                                    }else if ($level == 3) {
+                                        foreach ($result as $item) {
+                                            if($item["betalingtermijn"] < date("Y-m-d") && $item['disable'] == 'N') {
+                                                echo "<td>" . $item["ledennummer"] . "</td>" . "<td>" . $item["voornaam"] . "</td><td>" . $item["achternaam"] . "</td><td>" . $item["email"] . "</td><td>" . $item["betalingtermijn"] . "</td><td>" . $item["contributie"] . "</td><td><a href='views/viewuser.php?id=" . $item['ledennummer'] . "' class='btn btn-info'><i class='fas fa-user'></i></a></td><td></td><td></td></tr>";
+                                            }
+                                        } 
+                                    }
+                                    ?>
                         </tbody>
                     </table>
 

@@ -80,7 +80,6 @@ else $disabled = false;
         <main id="page-content-wrapper">
             <div class="container-fluid">
                 <h2>Dashboard - Gegevens Wijzigen</h2>
-                <h2><?=$message?></h2>
                 <h5><?= $message ?></h5>
                 <div class="col-sm-4">
                     <div class="card">

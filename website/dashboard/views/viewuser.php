@@ -22,6 +22,8 @@ if ($stmt = $conn->prepare("SELECT * FROM leden WHERE ledennummer = ? ORDER BY a
     }
 }
 
+if($_GET["disabled"] == "true") $disabled = true;
+
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -149,7 +151,8 @@ if ($stmt = $conn->prepare("SELECT * FROM leden WHERE ledennummer = ? ORDER BY a
                                         <label for="Geslacht">Leedennummer<br></label>
                                         <?php echo "<input type='text' class='form-control' disabled name='postcode' id='Postcode' placeholder='Postcode' value='" . $ledennummer . "'>" ?> 
                                     </div>
-                                    <a class="btn btn-primary" href="../leden.php"><i class="fas fa-backward"></i> Terug naar leden</a>
+                                    <?php if($disabled == false) echo '<a class="btn btn-primary" href="../leden.php"><i class="fas fa-backward"></i> Terug naar leden</a> ';
+                                else echo '<a class="btn btn-primary" href="../disabledleden.php"><i class="fas fa-backward"></i> Terug naar disabled leden</a> ';?>
                                 </div>
                             </form>
                         </div>

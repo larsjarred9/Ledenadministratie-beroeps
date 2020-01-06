@@ -7,6 +7,7 @@ if (!isset($_SESSION["loggedin"])) {
     exit();
 }
 
+$level = $_SESSION["level"];
 $sql = "SELECT * FROM leden WHERE disable='N' ORDER BY achternaam;";
 $result = $conn->query($sql);
 $contributie_aankomend_jaar;
@@ -160,10 +161,24 @@ foreach ($results2 as $item2) {
                                 <tbody>
 
                                     <?php
+                                    if($level == 1) {
                                     foreach ($result as $item) {
                                         if($item["betalingtermijn"] < date("Y-m-d") && $item['disable'] == 'N') {
                                             echo "<td>" . $item["ledennummer"] . "</td>" . "<td>" . $item["voornaam"] . "</td><td>" . $item["achternaam"] . "</td><td>" . $item["email"] . "</td><td>" . $item["betalingtermijn"] . "</td><td>" . $item["contributie"] . "</td><td><a href='views/viewuser.php?id=" . $item['ledennummer'] . "' class='btn btn-info'><i class='fas fa-user'></i></a></td><td><a href='views/edituser.php?id=" . $item['ledennummer'] . "' class='btn btn-warning'><i class='fas fa-user-edit'></i></a></td><td><a href='views/removeuser.php?id=" . $item["ledennummer"] . "' class='btn btn-danger'><i class='fas fa-user-minus'></i></a></td></tr>";
                                         }
+                                    }
+                                    }else if ($level == 2) {
+                                        foreach ($result as $item) {
+                                            if($item["betalingtermijn"] < date("Y-m-d") && $item['disable'] == 'N') {
+                                                echo "<td>" . $item["ledennummer"] . "</td>" . "<td>" . $item["voornaam"] . "</td><td>" . $item["achternaam"] . "</td><td>" . $item["email"] . "</td><td>" . $item["betalingtermijn"] . "</td><td>" . $item["contributie"] . "</td><td><a href='views/viewuser.php?id=" . $item['ledennummer'] . "' class='btn btn-info'><i class='fas fa-user'></i></a></td><td><a href='views/edituser.php?id=" . $item['ledennummer'] . "' class='btn btn-warning'><i class='fas fa-user-edit'></i></a></tr>";
+                                            }
+                                        } 
+                                    }else if ($level == 3) {
+                                        foreach ($result as $item) {
+                                            if($item["betalingtermijn"] < date("Y-m-d") && $item['disable'] == 'N') {
+                                                echo "<td>" . $item["ledennummer"] . "</td>" . "<td>" . $item["voornaam"] . "</td><td>" . $item["achternaam"] . "</td><td>" . $item["email"] . "</td><td>" . $item["betalingtermijn"] . "</td><td>" . $item["contributie"] . "</td><td><a href='views/viewuser.php?id=" . $item['ledennummer'] . "' class='btn btn-info'><i class='fas fa-user'></i></a></td><td></td><td></td></tr>";
+                                            }
+                                        } 
                                     }
                                     ?>
                                 </tbody>
