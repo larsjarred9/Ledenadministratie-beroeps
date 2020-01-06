@@ -1,4 +1,9 @@
 <?php
+// session_start();
+// if (!isset($_SESSION["loggedin"])) {
+//     header("Location: ../index.html");
+//     exit();
+// }
 
 session_start();
 if (!isset($_SESSION["loggedin"])) {
@@ -11,11 +16,11 @@ include("../../php/database.php");
 if ($_GET["confirmed"] == "true") {
     $id = $_GET["id"];
 
-    if ($stmt = $conn->prepare("UPDATE leden SET disable='Y' WHERE ledennummer = ?")) {
+    if ($stmt = $conn->prepare("UPDATE leden SET disable='N' WHERE ledennummer = ?")) {
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $stmt->close();
-        header("Location: ../leden.php");
+        header("Location: ../disabledleden.php");
     }
 }
 
@@ -90,7 +95,7 @@ if ($stmt = $conn->prepare("SELECT ledennummer,voornaam,achternaam FROM leden WH
         </div>
         <main id="page-content-wrapper">
             <div class="container-fluid">
-                <h2>Dashboard - Disable Lid</h2>
+                <h2>Dashboard - Activeer Lid</h2>
                 <div class="col-sm-4">
                     <div class="card">
                         <div class="card-body">
@@ -110,7 +115,7 @@ if ($stmt = $conn->prepare("SELECT ledennummer,voornaam,achternaam FROM leden WH
                                     <?php echo "<input type='text' class='form-control' disabled name='postcode' id='Postcode' placeholder='Postcode' value='" . $ledennummer . "'>" ?>
                                 </div>
                                 <a class="btn btn-primary" href="../leden.php"><i class="fas fa-times-circle"></i> Annuleren</a>
-                                <?php echo '<a class="btn btn-danger" href="removeuser.php?id=' . $_GET["id"] . '&confirmed=true"><i class="fas fa-check-circle"></i> Disable Lid</a>' ?>
+                                <?php echo '<a class="btn btn-success" href="enableuser.php?id=' . $_GET["id"] . '&confirmed=true"><i class="fas fa-check-circle"></i> Activeer Lid</a>' ?>
                             </form>
                         </div>
                     </div>

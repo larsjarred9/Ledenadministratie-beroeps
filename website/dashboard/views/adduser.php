@@ -31,6 +31,9 @@ if (!isset($_SESSION["loggedin"])) {
                     <a href="../leden.php">Leden</a>
                 </li>
                 <li>
+                    <a href="../disabledleden.php">Disabled Leden</a>
+                </li>
+                <li>
                     <a href="../profile.php">Mijn Account</a>
                 </li>
             </ul>
@@ -39,7 +42,7 @@ if (!isset($_SESSION["loggedin"])) {
 
         <!-- Page Content -->
         <div class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#"><img src="../../images/login/logo.png"></a>
+            <a class="navbar-brand"><img src="../../images/login/logo.png"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

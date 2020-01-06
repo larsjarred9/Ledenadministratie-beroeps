@@ -15,10 +15,11 @@ if ($stmt = $conn->prepare("SELECT * FROM leden WHERE ledennummer = ? ORDER BY a
     if ($stmt->num_rows > 0) {
         $stmt->bind_result($ledennummer, $voornaam, $achternaam, $geboortejaar, $adress, $huisnummer, $postcode, $woonplaats, $wapenstoegestaan, $betalingstermijn, $contributie, $geslacht, $email, $disabled);
         $stmt->fetch();
-    } else {
-        echo "Er ging iets fout tijdens het vinden van het lid. Probeer het later opnieuw.";
-    }
+    } else echo "Er ging iets fout tijdens het vinden van het lid. Probeer het later opnieuw.";
 }
+
+if($_GET["disabled"] == "true") $disabled = true;
+else $disabled = false;
 
 ?>
 <!DOCTYPE html>
@@ -47,6 +48,9 @@ if ($stmt = $conn->prepare("SELECT * FROM leden WHERE ledennummer = ? ORDER BY a
                     <a href="../leden.php">Leden</a>
                 </li>
                 <li>
+                    <a href="../disabledleden.php">Disabled Leden</a>
+                </li>
+                <li>
                     <a href="../profile.php">Mijn Account</a>
                 </li>
             </ul>
@@ -55,7 +59,7 @@ if ($stmt = $conn->prepare("SELECT * FROM leden WHERE ledennummer = ? ORDER BY a
 
         <!-- Page Content -->
         <div class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#"><img src="../../images/login/logo.png"></a>
+            <a class="navbar-brand"><img src="../../images/login/logo.png"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -76,6 +80,8 @@ if ($stmt = $conn->prepare("SELECT * FROM leden WHERE ledennummer = ? ORDER BY a
         <main id="page-content-wrapper">
             <div class="container-fluid">
                 <h2>Dashboard - Gegevens Wijzigen</h2>
+                <h2><?=$message?></h2>
+                <h5><?= $message ?></h5>
                 <div class="col-sm-4">
                     <div class="card">
                         <div class="card-body">
@@ -144,6 +150,9 @@ if ($stmt = $conn->prepare("SELECT * FROM leden WHERE ledennummer = ? ORDER BY a
                                         <?php echo "<input type='text' class='form-control' require name='postcode' id='Postcode' placeholder='Postcode' value='" . $postcode . "'>" ?>
                                     </div>
                                 </div>
+                                <?php 
+                                if($disabled == false) echo '<a class="btn btn-primary" href="../leden.php"><i class="fas fa-backward"></i> Terug naar leden</a> ';
+                                else echo '<a class="btn btn-primary" href="../disabledleden.php"><i class="fas fa-backward"></i> Terug naar disabled leden</a> ';?>
                                 <button type="submit" class="btn btn-warning"><i class='fas fa-user-edit'></i> Wijzig Gegevens</button>
                             </form>
                         </div>

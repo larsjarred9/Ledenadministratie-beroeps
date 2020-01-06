@@ -7,17 +7,16 @@ if (!isset($_SESSION["loggedin"])) {
     exit();
 }
 
-$sql = "SELECT * FROM leden ORDER BY achternaam;";
-
+$sql = "SELECT * FROM leden WHERE disable='N' ORDER BY achternaam;";
 $result = $conn->query($sql);
-
+$contributie_aankomend_jaar;
 $totalcount = 0;
-$contributie_aankomend_jaar = 0;
 foreach ($result as $item) {
     $totalcount++;
     $contributie_aankomend_jaar += $item["contributie"];
 };
 $sql2 = "SELECT * FROM contributies ORDER BY jaar DESC;";
+
 
 $results2 = $conn->query($sql2);
 $totaleInkomsten = 0;
@@ -30,7 +29,6 @@ foreach ($results2 as $item2) {
     }
     $i++;
 }
-
 
 ?>
 <!DOCTYPE html>
@@ -59,6 +57,9 @@ foreach ($results2 as $item2) {
                     <a href="leden.php">Leden</a>
                 </li>
                 <li>
+                    <a href="disabledleden.php">Disabled Leden</a>
+                </li>
+                <li>
                     <a href="profile.php">Mijn Account</a>
                 </li>
             </ul>
@@ -67,7 +68,7 @@ foreach ($results2 as $item2) {
 
         <!-- Page Content -->
         <div class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#"><img src="../images/login/logo.png"></a>
+            <a class="navbar-brand"><img src="../images/login/logo.png"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -91,7 +92,7 @@ foreach ($results2 as $item2) {
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="card text-white bg-brown" style="max-width: 18rem;">
-                            <div class="card-header">Leden</div>
+                            <div class="card-header">Actieve Leden</div>
                             <div class="card-body">
                                 <h5 class="card-title"><?= $totalcount ?></h5>
                                 <p class="card-text">Het aantal actieve leden.</p>

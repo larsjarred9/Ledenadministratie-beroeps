@@ -52,7 +52,10 @@ if (count($_POST) > 0) {
                     <a href="leden.php">Leden</a>
                 </li>
                 <li>
-                    <b><a href="profile.php">Mijn Account</a></b>
+                    <a href="disabledleden.php">Disabled Leden</a>
+                </li>
+                <li>
+                    <b><a class="active" href="profile.php">Mijn Account</a></b>
                 </li>
             </ul>
         </div>
@@ -60,7 +63,7 @@ if (count($_POST) > 0) {
 
         <!-- Page Content -->
         <div class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#"><img src="../images/login/logo.png"></a>
+            <a class="navbar-brand"><img src="../images/login/logo.png"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

@@ -9,10 +9,10 @@ if (!isset($_SESSION["loggedin"])) {
 
 if (isset($_GET["search"])) {
     $search = $_GET["search"];
-    $sql = "SELECT * FROM leden  WHERE disable='N' AND achternaam LIKE '%" . $search . "%' ORDER BY achternaam;";
+    $sql = "SELECT * FROM leden WHERE disable='Y' AND achternaam LIKE '%" . $search . "%' ORDER BY achternaam;";
     $result = $conn->query($sql);
 } else {
-    $sql = "SELECT * FROM leden WHERE disable='N' ORDER BY achternaam;";
+    $sql = "SELECT * FROM leden WHERE disable='Y' ORDER BY achternaam;";
     $result = $conn->query($sql);
 }
 ?>
@@ -39,10 +39,10 @@ if (isset($_GET["search"])) {
                     <a href="index.php">Dashboard</a>
                 </li>
                 <li>
-                    <a class="active" href="leden.php">Leden</a>
+                    <a href="leden.php">Leden</a>
                 </li>
                 <li>
-                    <a href="disabledleden.php">Disabled Leden</a>
+                    <a class="active" href="disabledleden.php">Disabled Leden</a>
                 </li>
                 <li>
                     <a href="profile.php">Mijn Account</a>
@@ -73,7 +73,7 @@ if (isset($_GET["search"])) {
         </div>
         <main id="page-content-wrapper">
             <div class="container-fluid">
-                <h2>Dashboard - Leden</h2>
+                <h2>Dashboard - Disabled Leden</h2>
                 <form method="POST" action="../php/search.php">
                     <div class="form-row">
                         <div class="form-group col-md-3">
@@ -81,9 +81,6 @@ if (isset($_GET["search"])) {
                         </div>
                         <div class="form-group col-md-1">
                             <button class="btn btn-primary form-control" type="submit" id="submit"><i class="fas fa-search"></i> Zoeken</button>
-                        </div>
-                        <div class="form-group col-md-8">
-                            <a style="float: right;" href="views/adduser.php" class="btn btn-success"><i class="fas fa-user-plus"></i> Lid Toevoegen</a>
                         </div>
                     </div>
                 </form>
@@ -106,7 +103,7 @@ if (isset($_GET["search"])) {
 
                             <?php
                             foreach ($result as $item) {
-                                echo "<td>" . $item["ledennummer"] . "</td>" . "<td>" . $item["voornaam"] . "</td><td>" . $item["achternaam"] . "</td><td>" . $item["email"] . "</td><td>" . $item["geboortejaar"] . "</td><td>" . $item["woonplaats"] . "</td><td><a href='views/viewuser.php?id=" . $item['ledennummer'] . "' class='btn btn-info'><i class='fas fa-user'></i></a></td><td><a href='views/edituser.php?id=" . $item['ledennummer'] . "' class='btn btn-warning'><i class='fas fa-user-edit'></i></a></td><td><a href='views/removeuser.php?id=" . $item["ledennummer"] . "' class='btn btn-danger'><i class='fas fa-user-minus'></i></a></td></tr>";
+                                echo "<td>" . $item["ledennummer"] . "</td>" . "<td>" . $item["voornaam"] . "</td><td>" . $item["achternaam"] . "</td><td>" . $item["email"] . "</td><td>" . $item["geboortejaar"] . "</td><td>" . $item["woonplaats"] . "</td><td><a href='views/viewuser.php?id=" . $item['ledennummer'] . "' class='btn btn-info'><i class='fas fa-user'></i></a></td><td><a href='views/edituser.php?id=" . $item['ledennummer'] . "&disabled=true' class='btn btn-warning'><i class='fas fa-user-edit'></i></a></td><td><a href='views/enableuser.php?id=" . $item["ledennummer"] . "' class='btn btn-success'><i class='fas fa-user-check'></i></a></td></tr>";
                             }
                             ?>
                         </tbody>
