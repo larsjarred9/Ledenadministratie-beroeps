@@ -23,6 +23,7 @@ if ($stmt = $conn->prepare("SELECT * FROM leden WHERE ledennummer = ? ORDER BY a
 }
 
 if($_GET["disabled"] == "true") $disabled = true;
+else $disabled = false;
 
 ?>
 <!DOCTYPE html>
